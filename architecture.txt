@@ -1,0 +1,10 @@
+1- dockerfile for each microservice
+2- kubernetes: prepare one node cluster:
+ -- terraform to deploy EC2 instance.
+ --- VPC/ Subnet/ Security Groups/ IAM/ Routing Table
+ -- terraform to deploy EKS
+ --- ELB/ Route 53/ Envoy/ cert manager - ACM : el CA mtei l cert manager yaatikech trusted HTTPS( l CA tejem takhtarou enty ama not recognized by the browser) but ACM is recogni
+3- If you're deploying a Kubernetes cluster with an AWS Load Balancer Controller, you can annotate an Ingress resource to use an HTTPS listener by specifying the ACM certificate ARN.
+ - Route 53 helps direct user requests to your Elastic Load Balancer (ELB) securely and efficiently:
+   It maps your custom domain name (e.g., www.example.com) to the ELB DNS name.
+   When combined with an ELB HTTPS listener, Route 53 ensures users are seamlessly connected to your application over a secure connection
