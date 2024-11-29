@@ -1,5 +1,3 @@
-application/frontend/
-
 ec2-terraform/.terraform/
 ec2-terraform/.terraform.lock.hcl
 ec2-terraform/terraform.tfstate
@@ -10,3 +8,7 @@ eks-terraform/.terraform.lock.hcl
 eks-terraform/terraform.tfstate
 eks-terraform/terraform.tfstate.backup
 application/frontend
+
+test-pos.yaml
+test-nginx.yaml
+test-ingress.yaml
