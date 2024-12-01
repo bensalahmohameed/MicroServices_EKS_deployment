@@ -21,11 +21,4 @@ spec:
             name: frontend-service
             port:
               number: 80
-      - path: /prices
-        pathType: Prefix
-        backend:
-          service:
-            name: bitcoin-api
-            port:
-              number: 5000
 
