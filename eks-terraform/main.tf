@@ -1,5 +1,5 @@
 ####################
-   Network Setup
+   #Network Setup
 ####################
 
 resource "aws_vpc" "main" {
@@ -212,7 +212,7 @@ resource "aws_vpc_security_group_egress_rule" "my-eks-vpc-stack-ControlPlaneSecu
 }
 
 ####################
-     EKS Setup
+     #EKS Setup
 ####################
 
 resource "aws_iam_role" "eks-role" {
@@ -332,7 +332,7 @@ resource "aws_eks_node_group" "my-ng" {
 }
 
 ####################
-     ELB Setup
+     #ELB Setup
 ####################
 
 resource "aws_iam_policy" "elb-policy" {
