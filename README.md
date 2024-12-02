@@ -106,9 +106,8 @@ Make sure to delete the load balancer provisioned with the ALB manually from aws
 
 ---
 
----
 
 ## Contact
 For any questions or issues, feel free to reach out:
 - **Author**: Mohamed Ben Salah
-- **Email**: [your-email@example.com](benz.mohamed2000@gmail.com)
+- **Email**: [benz.mohamed2000@gmail.com](benz.mohamed2000@gmail.com)
