@@ -1,21 +1,20 @@
 ﻿# MicroServices_EKS_deployment
 
-This repository contains Terraform configurations and Kubernetes manifests to deploy an Amazon EKS cluster, including all necessary networking infrastructure (VPC, subnets, NAT gateways) and an ALB ingress controller for managing application traffic.
+This repository contains Terraform configurations and Kubernetes manifests to provision an Amazon EKS cluster, including all necessary networking infrastructure (VPC, subnets, ...) and IAMs to securely deploy a real-time bitcoin price-tracking application.
 
 ---
 
 ## Features
 - **VPC Setup**:
   - A custom VPC with public and private subnets across two availability zones.
-  - NAT Gateways for private subnet internet access.
 - **EKS Cluster**:
   - Fully managed Amazon EKS cluster with worker node groups.
-  - IAM roles configured for EKS and worker nodes.
 - **ALB Ingress**:
   - Application Load Balancer (ALB) provisioned using AWS Load Balancer Controller.
-  - Ingress configuration for exposing Kubernetes services.
 - **Secure IAM Policies**:
   - Fine-grained IAM policies for managing ALB, EKS, and worker node permissions.
+- **Bitcoin Price Application**
+  - Microserives based application for Bitcoin price live track.
 
 ---
 
@@ -32,8 +31,8 @@ Ensure the following tools are installed on your local machine:
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/your-username/your-repository.git
-cd your-repository
+git clone https://github.com/bensalahmohameed/MicroServices_EKS_deployment.git
+cd MicroServices_EKS_deployment
 ```
 
 ### 2. Set Up AWS Credentials
@@ -45,7 +44,7 @@ aws configure
 ### 3. Initialize and Apply Terraform
 Navigate to the Terraform module directory:
 ```bash
-cd terraform
+cd eks-terraform
 ```
 
 Run the following commands:
@@ -58,54 +57,28 @@ terraform apply
 This will:
 1. Create the VPC with public and private subnets.
 2. Set up EKS with the required IAM roles and node groups.
-3. Deploy the AWS Load Balancer Controller.
 
 ### 4. Deploy Kubernetes Resources
 Once the EKS cluster is up, configure `kubectl`:
 ```bash
-aws eks --region <region> update-kubeconfig --name my-cluster
+aws eks --region eu-central-1 update-kubeconfig --name my-cluster
+```
+
+Prepare the ingress contoller:
+```bash
+kubectl apply -f aws-load-balancer-controller-service-account.yaml
+```
+
+```bash
+"helm install aws-load-balancer-controller eks/aws-load-balancer-controller -n kube-system --set clusterName=my-cluster --set serviceAccount.create=false --set serviceAccount.name=aws-load-balancer-controller --set region=eu-central-1 --set vpcId=XXX"
 ```
 
 Apply the Kubernetes manifests:
 ```bash
-kubectl apply -f k8s/ingress.yaml
-kubectl apply -f k8s/frontend-service.yaml
-kubectl apply -f k8s/frontend-deployment.yaml
+kubectl apply -f ingress.yaml
+kubectl apply -f frontend.yaml
+kubectl apply -f frontend.yaml
 ```
-
----
-
-## Project Structure
-```plaintext
-.
-├── terraform/
-│   ├── main.tf            # Main Terraform configurations
-│   ├── variables.tf       # Input variables
-│   ├── outputs.tf         # Outputs
-│   └── elb-policy.json    # IAM policy for ALB Controller
-├── k8s/
-│   ├── ingress.yaml       # Ingress resource for ALB
-│   ├── frontend-service.yaml # Kubernetes service
-│   └── frontend-deployment.yaml # Kubernetes deployment
-├── README.md              # Project documentation
-```
-
----
-
-## Configuration
-### Customizing the Terraform Variables
-You can modify `variables.tf` to change:
-- VPC CIDR ranges
-- Number of subnets
-- Cluster name
-- Scaling configuration for node groups
-
-### Customizing Kubernetes Manifests
-Edit the Kubernetes manifests under the `k8s/` directory to adjust:
-- Deployment replicas
-- Service ports
-- Ingress routing rules
-
 ---
 
 ## Validating Deployment
@@ -114,9 +87,6 @@ Edit the Kubernetes manifests under the `k8s/` directory to adjust:
    ```bash
    aws eks describe-cluster --name my-cluster
    ```
-
-2. **Verify ALB**:
-   Log into the AWS console and confirm that an ALB is provisioned under the EC2 → Load Balancers section.
 
 3. **Test the Application**:
    Retrieve the ALB's DNS name:
@@ -132,30 +102,9 @@ To destroy all resources created by Terraform:
 ```bash
 terraform destroy
 ```
-Make sure to delete any Kubernetes resources manually:
-```bash
-kubectl delete -f k8s/
-```
+Make sure to delete the load balancer provisioned with the ALB manually from aws console
 
 ---
-
-## Troubleshooting
-1. **ALB Not Created**:
-   - Verify the AWS Load Balancer Controller is running:
-     ```bash
-     kubectl get pods -n kube-system
-     ```
-2. **Ingress Not Accessible**:
-   - Check ALB status in the AWS console.
-   - Verify Ingress resource:
-     ```bash
-     kubectl get ingress nginx-ingress
-     ```
-
----
-
-## License
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ---
 
