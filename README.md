@@ -70,7 +70,7 @@ kubectl apply -f aws-load-balancer-controller-service-account.yaml
 ```
 
 ```bash
-"helm install aws-load-balancer-controller eks/aws-load-balancer-controller -n kube-system --set clusterName=my-cluster --set serviceAccount.create=false --set serviceAccount.name=aws-load-balancer-controller --set region=eu-central-1 --set vpcId=XXX"
+helm install aws-load-balancer-controller eks/aws-load-balancer-controller -n kube-system --set clusterName=my-cluster --set serviceAccount.create=false --set serviceAccount.name=aws-load-balancer-controller --set region=eu-central-1 --set vpcId=XXX
 ```
 
 Apply the Kubernetes manifests:
@@ -111,4 +111,4 @@ Make sure to delete the load balancer provisioned with the ALB manually from aws
 ## Contact
 For any questions or issues, feel free to reach out:
 - **Author**: Mohamed Ben Salah
-- **Email**: [your-email@example.com](mailto:your-email@example.com)
+- **Email**: [your-email@example.com](benz.mohamed2000@gmail.com)
