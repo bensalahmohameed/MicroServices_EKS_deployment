@@ -1,3 +1,7 @@
+####################
+   Network Setup
+####################
+
 resource "aws_vpc" "main" {
   cidr_block       = "192.168.0.0/16"
   instance_tenancy = "default"
@@ -207,9 +211,9 @@ resource "aws_vpc_security_group_egress_rule" "my-eks-vpc-stack-ControlPlaneSecu
   security_group_id = aws_security_group.my-eks-vpc-stack-ControlPlaneSecurityGroup.id
 }
 
-
-
-###############################################
+####################
+     EKS Setup
+####################
 
 resource "aws_iam_role" "eks-role" {
   name = "myAmazonEKSClusterRole"
@@ -272,8 +276,6 @@ resource "aws_eks_cluster" "my-cluster" {
     subnet_ids = [aws_subnet.private1.id, aws_subnet.private2.id, aws_subnet.public1.id, aws_subnet.public2.id]
   }
 
-  # Ensure that IAM Role permissions are created before and deleted after EKS Cluster handling.
-  # Otherwise, EKS will not be able to properly delete EKS managed EC2 infrastructure such as Security Groups.
   depends_on = [
     aws_iam_role_policy_attachment.eks-policy-attach,
   ]
@@ -322,8 +324,6 @@ resource "aws_eks_node_group" "my-ng" {
     max_unavailable = 1
   }
 
-  # Ensure that IAM Role permissions are created before and deleted after EKS Node Group handling.
-  # Otherwise, EKS will not be able to properly delete EC2 Instances and Elastic Network Interfaces.
   depends_on = [
     aws_iam_role_policy_attachment.eks-worker-policy-attach-1,
     aws_iam_role_policy_attachment.eks-worker-policy-attach-2,
@@ -331,9 +331,9 @@ resource "aws_eks_node_group" "my-ng" {
   ]
 }
 
-
-
-#######################################
+####################
+     ELB Setup
+####################
 
 resource "aws_iam_policy" "elb-policy" {
   name        = "AWSLoadBalancerControllerIAMPolicy"
