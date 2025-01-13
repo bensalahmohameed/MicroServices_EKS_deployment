@@ -77,7 +77,7 @@ Apply the Kubernetes manifests:
 ```bash
 kubectl apply -f ingress.yaml
 kubectl apply -f frontend.yaml
-kubectl apply -f frontend.yaml
+kubectl apply -f backend.yaml
 ```
 ---
 
